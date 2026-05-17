@@ -77,28 +77,28 @@ locals {
   # Environment definitions — drives most of the for_each loops below.
   environments = {
     prod = {
-      address_space      = ["10.20.0.0/16"]
-      subnet_app         = "10.20.10.0/24"
-      subnet_mysql       = "10.20.20.0/24"
-      subnet_pe          = "10.20.30.0/24"
-      app_service_sku    = "B1"
-      mysql_sku          = "B_Standard_B1ms"
-      mysql_storage_gb   = 32
-      mysql_backup_days  = 7
-      autoshutdown       = "false"
-      service_tier       = "production"
+      address_space     = ["10.20.0.0/16"]
+      subnet_app        = "10.20.10.0/24"
+      subnet_mysql      = "10.20.20.0/24"
+      subnet_pe         = "10.20.30.0/24"
+      app_service_sku   = "B1"
+      mysql_sku         = "B_Standard_B1ms"
+      mysql_storage_gb  = 32
+      mysql_backup_days = 7
+      autoshutdown      = "false"
+      service_tier      = "production"
     }
     dev = {
-      address_space      = ["10.30.0.0/16"]
-      subnet_app         = "10.30.10.0/24"
-      subnet_mysql       = "10.30.20.0/24"
-      subnet_pe          = "10.30.30.0/24"
-      app_service_sku    = "F1"
-      mysql_sku          = "B_Standard_B1ms"
-      mysql_storage_gb   = 20
-      mysql_backup_days  = 7
-      autoshutdown       = "true"
-      service_tier       = "development"
+      address_space     = ["10.30.0.0/16"]
+      subnet_app        = "10.30.10.0/24"
+      subnet_mysql      = "10.30.20.0/24"
+      subnet_pe         = "10.30.30.0/24"
+      app_service_sku   = "F1"
+      mysql_sku         = "B_Standard_B1ms"
+      mysql_storage_gb  = 20
+      mysql_backup_days = 7
+      autoshutdown      = "true"
+      service_tier      = "development"
     }
   }
 

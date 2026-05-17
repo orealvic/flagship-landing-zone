@@ -43,9 +43,9 @@ resource "azurerm_linux_web_app" "web" {
   }
 
   site_config {
-    always_on        = each.value.app_service_sku != "F1" # F1 doesn't support always-on
-    ftps_state       = "Disabled"
-    http2_enabled    = true
+    always_on           = each.value.app_service_sku != "F1" # F1 doesn't support always-on
+    ftps_state          = "Disabled"
+    http2_enabled       = true
     minimum_tls_version = "1.2"
     application_stack {
       node_version = "20-lts"
@@ -53,10 +53,10 @@ resource "azurerm_linux_web_app" "web" {
   }
 
   app_settings = {
-    WEBSITE_NODE_DEFAULT_VERSION    = "~20"
-    SCM_DO_BUILD_DURING_DEPLOYMENT  = "true"
-    KEY_VAULT_URI                   = azurerm_key_vault.main[each.key].vault_uri
-    API_BASE_URL                    = "https://app-flagship-procurement-api-${each.key}-${random_string.suffix.result}.azurewebsites.net"
+    WEBSITE_NODE_DEFAULT_VERSION          = "~20"
+    SCM_DO_BUILD_DURING_DEPLOYMENT        = "true"
+    KEY_VAULT_URI                         = azurerm_key_vault.main[each.key].vault_uri
+    API_BASE_URL                          = "https://app-flagship-procurement-api-${each.key}-${random_string.suffix.result}.azurewebsites.net"
     APPLICATIONINSIGHTS_CONNECTION_STRING = "" # Day 4 will wire App Insights
   }
 
@@ -107,9 +107,9 @@ resource "azurerm_linux_web_app" "api" {
   }
 
   site_config {
-    always_on        = each.value.app_service_sku != "F1"
-    ftps_state       = "Disabled"
-    http2_enabled    = true
+    always_on           = each.value.app_service_sku != "F1"
+    ftps_state          = "Disabled"
+    http2_enabled       = true
     minimum_tls_version = "1.2"
     application_stack {
       node_version = "20-lts"
