@@ -1,0 +1,40 @@
+name: Landing Zone IaC
+
+# Plans on PR. Applies on push to main. Same pattern as flagship-platform.
+
+on:
+  pull_request:
+    paths:
+      - 'landing-zone/**'
+      - '.github/workflows/landing-zone-iac.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'landing-zone/**'
+      - '.github/workflows/landing-zone-iac.yml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    name: Plan
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    uses: orealvic/flagship-actions/.github/workflows/terraform.yml@main
+    with:
+      working_directory: landing-zone
+      state_key: landing-zone.tfstate
+      apply: false
+
+  apply:
+    name: Apply
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: orealvic/flagship-actions/.github/workflows/terraform.yml@main
+    with:
+      working_directory: landing-zone
+      state_key: landing-zone.tfstate
+      environment: landing-zone-apply
+      apply: true
