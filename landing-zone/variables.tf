@@ -19,6 +19,7 @@ variable "tfstate_resource_group_name" {
 variable "tfstate_storage_account_name" {
   description = "Storage account name for tfstate"
   type        = string
+  default     = "stflagshiptf6m4cx3"
 }
 
 variable "tfstate_container_name" {
@@ -30,4 +31,5 @@ variable "tfstate_container_name" {
 variable "alert_email" {
   description = "Email for landing-zone alerts"
   type        = string
+  default     = "victor.ugbor30@gmail.com"
 }
