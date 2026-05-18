@@ -11,7 +11,7 @@
 ################################################################################
 
 locals {
-  automation_location = "eastus"
+  automation_location = "canadacentral"
 }
 
 resource "azurerm_resource_group" "automation" {

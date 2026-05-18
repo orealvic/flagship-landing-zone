@@ -1,11 +1,11 @@
-################################################################################
+﻿################################################################################
 # Key Vault per environment
 #
 #   - Standard SKU (Premium adds HSM, unnecessary for portfolio)
-#   - RBAC authorization (no access policies — modern pattern)
+#   - RBAC authorization (no access policies â€” modern pattern)
 #   - Soft-delete enabled (7 days, minimum)
 #   - Private endpoint into snet-private-endpoints
-#   - A record auto-registered via DNS zone group → Day 2's PDZ
+#   - A record auto-registered via DNS zone group â†’ Day 2's PDZ
 ################################################################################
 
 resource "azurerm_key_vault" "main" {
@@ -31,6 +31,7 @@ resource "azurerm_key_vault" "main" {
   network_acls {
     default_action = "Deny"
     bypass         = "AzureServices"
+    ip_rules       = ["174.92.95.37"]
   }
 
   tags = local.tags_by_env[each.key]
@@ -46,7 +47,7 @@ resource "azurerm_role_assignment" "kv_admin" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-# ─── Private endpoint ──────────────────────────────────────────────────────
+# â”€â”€â”€ Private endpoint â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 resource "azurerm_private_endpoint" "kv" {
   for_each = local.environments

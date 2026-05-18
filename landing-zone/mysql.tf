@@ -1,13 +1,13 @@
-################################################################################
+﻿################################################################################
 # MySQL Flexible Server per environment
 #
-#   - B_Standard_B1ms (1 vCore, 2 GiB RAM, burstable — fits cheap demo)
+#   - B_Standard_B1ms (1 vCore, 2 GiB RAM, burstable â€” fits cheap demo)
 #   - VNet-integrated via snet-mysql delegated subnet (no public network access)
 #   - Generated random admin password stored in Key Vault as `mysql-admin-password`
 #   - 7-day backup retention
 #
 # IMPORTANT: VNet-integrated MySQL Flexible Server does NOT use private endpoints.
-# It uses subnet delegation — the server itself lives in the delegated subnet and
+# It uses subnet delegation â€” the server itself lives in the delegated subnet and
 # is reachable from the VNet's address space. No PE/PDZ needed for the DB itself.
 ################################################################################
 
@@ -25,7 +25,7 @@ resource "random_password" "mysql_admin" {
 }
 
 # Store the password in Key Vault FIRST. The MySQL server uses an output from
-# random_password directly, so the secret lookup is not on the deploy path —
+# random_password directly, so the secret lookup is not on the deploy path â€”
 # it's there for the app/operators to retrieve later.
 resource "azurerm_key_vault_secret" "mysql_admin_password" {
   for_each = local.environments
@@ -58,7 +58,7 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   tags       = local.tags_by_env[each.key]
 }
 
-# ─── MySQL Flexible Server ─────────────────────────────────────────────────
+# â”€â”€â”€ MySQL Flexible Server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 resource "azurerm_mysql_flexible_server" "main" {
   for_each = local.environments
@@ -73,9 +73,9 @@ resource "azurerm_mysql_flexible_server" "main" {
   sku_name = each.value.mysql_sku
   version  = "8.0.21"
 
-  # VNet integration — server lives in the delegated subnet, no public IP
+  # VNet integration â€” server lives in the delegated subnet, no public IP
   delegated_subnet_id = azurerm_subnet.mysql[each.key].id
-  # Private DNS zone for MySQL — Day 2 created this
+  # Private DNS zone for MySQL â€” Day 2 created this
   private_dns_zone_id = data.terraform_remote_state.platform.outputs.private_dns_zone_ids["mysql"]
 
   backup_retention_days        = each.value.mysql_backup_days
@@ -87,14 +87,8 @@ resource "azurerm_mysql_flexible_server" "main" {
     iops              = 360 # B1ms minimum
   }
 
-  # High availability disabled — B-series SKU doesn't support it anyway
+  # High availability disabled â€” B-series SKU doesn't support it anyway
   # Maintenance window: Sunday 03:00 local time
-  maintenance_window {
-    day_of_week  = 0
-    start_hour   = 3
-    start_minute = 0
-  }
-
   tags = local.tags_by_env[each.key]
 
   lifecycle {
@@ -105,9 +99,9 @@ resource "azurerm_mysql_flexible_server" "main" {
   }
 }
 
-# ─── Server-level config ───────────────────────────────────────────────────
+# â”€â”€â”€ Server-level config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-# Require SSL — defensive default
+# Require SSL â€” defensive default
 resource "azurerm_mysql_flexible_server_configuration" "require_secure_transport" {
   for_each = local.environments
 
